@@ -267,7 +267,10 @@
                 p.strokeWeight(2);
                 p.beginShape();
                 baseShape.forEach(pt => {
-                    p.vertex(pt.x, pt.y);
+                    // Translation: x' = x + tx, y' = y + ty
+                    let x_new = pt.x + tx;
+                    let y_new = pt.y + ty;
+                    p.vertex(x_new, y_new);
                 });
                 p.endShape(p.CLOSE);
             };
@@ -303,7 +306,10 @@
                 p.strokeWeight(2);
                 p.beginShape();
                 baseShape.forEach(pt => {
-                    p.vertex(pt.x, pt.y);
+                    // Rotation: x' = x*cos(θ) - y*sin(θ), y' = x*sin(θ) + y*cos(θ)
+                    let x_new = pt.x * cosT - pt.y * sinT;
+                    let y_new = pt.x * sinT + pt.y * cosT;
+                    p.vertex(x_new, y_new);
                 });
                 p.endShape(p.CLOSE);
             };
@@ -340,7 +346,10 @@
                 p.strokeWeight(2);
                 p.beginShape();
                 baseShape.forEach(pt => {
-                    p.vertex(pt.x, pt.y);
+                    // Scaling: x' = x*sx, y' = y*sy
+                    let x_new = pt.x * sx;
+                    let y_new = pt.y * sy;
+                    p.vertex(x_new, y_new);
                 });
                 p.endShape(p.CLOSE);
             };
@@ -377,8 +386,10 @@
                 p.strokeWeight(2);
                 p.beginShape();
                 baseShape.forEach(pt => {
-                    // Math: x' = x + y*shx, y' = y + x*shy
-                    p.vertex(pt.x, pt.y);
+                    // Shearing: x' = x + y*shx, y' = y + x*shy
+                    let x_new = pt.x + pt.y * shx;
+                    let y_new = pt.y + pt.x * shy;
+                    p.vertex(x_new, y_new);
                 });
                 p.endShape(p.CLOSE);
             };
@@ -411,7 +422,16 @@
                 p.strokeWeight(2);
                 p.beginShape();
                 baseShape.forEach(pt => {
-                    p.vertex(pt.x, pt.y);
+                    // Reflection:
+                    // Reflect across X-axis: x' = x, y' = -y
+                    // Reflect across Y-axis: x' = -x, y' = y
+                    let x_new = pt.x;
+                    let y_new = pt.y;
+
+                    if (refY) x_new = -x_new;  // Reflect across Y-axis
+                    if (refX) y_new = -y_new;  // Reflect across X-axis
+
+                    p.vertex(x_new, y_new);
                 });
                 p.endShape(p.CLOSE);
             };
